@@ -14,14 +14,14 @@ sudo ip addr add 192.168.1.254/24 dev br1
 
 # Run spark master image
 docker run --name="master" -h master \
---add-host master:192.168.1.10 \
---add-host spark1:192.168.1.11 \
---add-host spark2:192.168.1.12 \
---add-host spark3:192.168.1.13 \
---add-host spark4:192.168.1.14 \
---expose=1-65535 \
---env SPARK_MASTER_IP=192.168.1.10 \
--d tkurylek/spark:latest
+	--add-host master:192.168.1.10 \
+	--add-host spark1:192.168.1.11 \
+	--add-host spark2:192.168.1.12 \
+	--add-host spark3:192.168.1.13 \
+	--add-host spark4:192.168.1.14 \
+	--expose=1-65535 \
+	--env SPARK_MASTER_IP=192.168.1.10 \
+	-d tkurylek/spark:latest
 
 # Add spark master image to spark cluster network
 sudo pipework br1 master 192.168.1.10/24
@@ -47,4 +47,5 @@ do
 	docker exec spark${SLAVE_ID} ./spark-1.5.1-bin-cdh4/sbin/start-slave.sh spark://192.168.1.10:7077
 done
 
-curl -IL 192.168.1.10:8080
+# Verification
+# curl -IL 192.168.1.10:8080
